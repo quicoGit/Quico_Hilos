@@ -1,5 +1,6 @@
 package com.plumbaria.hilos;
 
+import android.os.AsyncTask;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,8 +24,10 @@ public class MainActivity extends AppCompatActivity {
     public void calcularOperacion(View view) {
         int n = Integer.parseInt(entrada.getText().toString());
         salida.append(n + "! = ");
-        MiThread thread = new MiThread(n);
-        thread.start();
+//        MiThread thread = new MiThread(n);
+  //      thread.start();
+        MiTarea tarea = new MiTarea();
+        tarea.execute(n);
     }
 
     public int factorial(int n) {
@@ -50,6 +53,17 @@ public class MainActivity extends AppCompatActivity {
                     salida.append(res + "\n");
                 }
             });
+        }
+    }
+
+    class MiTarea extends AsyncTask<Integer, Void, Integer> {
+        @Override
+        protected Integer doInBackground(Integer... n) {
+            return factorial(n[0]);
+        }
+        @Override
+        protected void onPostExecute(Integer res) {
+            salida.append(res + "\n");
         }
     }
 }
